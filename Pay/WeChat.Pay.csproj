@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+	  <None Remove="Assets\apiclient_cert.p12" />
+	  <None Remove="Assets\apiclient_cert_test.p12" />
+	</ItemGroup>
+	<ItemGroup>
+	  <EmbeddedResource Include="Assets\apiclient_cert.p12" />
+	  <EmbeddedResource Include="Assets\apiclient_cert_test.p12" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Common\WeChat.Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AbpBoilerplate.FileStorage" Version="0.1.1" />
+		<PackageReference Include="Portable.BouncyCastle" Version="1.9.0" />
+	</ItemGroup>
+
+</Project>
