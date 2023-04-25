@@ -14,13 +14,15 @@ namespace WeChat.Pay.Services.Pay
     /// </summary>
     public class OrdinaryMerchantPayService : WeChatPayService
     {
-        #region > 原始 URL 常量定义 <
+        #region 原始 URL 常量定义 <
 
         protected const string UnifiedOrderUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
         protected const string RefundUrl = "https://api.mch.weixin.qq.com/secapi/pay/refund";
         protected const string OrderQueryUrl = "https://api.mch.weixin.qq.com/pay/orderquery";
         protected const string CloseOrderUrl = "https://api.mch.weixin.qq.com/pay/closeorder";
         protected const string RefundQueryUrl = "https://api.mch.weixin.qq.com/pay/refundquery";
+        protected const string TransfersUrl = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+        protected const string TransfersQueryUrl = "https://api.mch.weixin.qq.com/mmpaymkttransfers/gettransferinfo";
         private readonly IPayConfiguration options;
 
         #endregion
@@ -30,7 +32,7 @@ namespace WeChat.Pay.Services.Pay
         {
             this.options = options;
         }
-        #region > 统一下单接口 <
+        #region 统一下单
 
         /// <summary>
         /// 除付款码支付场景以外，商户系统先调用该接口在微信支付服务后台生成预支付交易单，返回正确的预支付交易会话标识后再按 Native、JSAPI、APP 等不同场景生成交易串调起支付。
@@ -127,7 +129,7 @@ namespace WeChat.Pay.Services.Pay
 
         #endregion
 
-        #region > 申请退款接口 <
+        #region 申请退款
 
         /// <summary>
         /// 申请退款功能，支持针对指定订单进行退款操作。
@@ -168,7 +170,7 @@ namespace WeChat.Pay.Services.Pay
 
         #endregion
 
-        #region > 查询订单接口 <
+        #region 查询订单
 
         /// <summary>
         /// 根据微信订单号或者商户订单号，查询订单的详细信息。如果两个参数都被填写，优先使用微信订单号进行查询。
@@ -214,7 +216,7 @@ namespace WeChat.Pay.Services.Pay
 
         #endregion
 
-        #region > 关闭订单接口 <
+        #region 关闭订单
 
         /// <summary>
         /// 根据商户订单号，关闭指定的订单。
@@ -246,7 +248,7 @@ namespace WeChat.Pay.Services.Pay
 
         #endregion
 
-        #region > 查询退款接口 <
+        #region 查询退款
 
         /// <summary>
         /// 提交退款申请后，通过调用该接口查询退款状态
@@ -282,6 +284,83 @@ namespace WeChat.Pay.Services.Pay
             request.AddParameter("sign", signStr);
 
             return await RequestAndGetReturnValueAsync(await GetRequestUrl(RefundQueryUrl), request);
+        }
+        #endregion
+
+
+
+
+        #region 申请付款到零钱
+
+        /// <summary>
+        /// 用于向微信用户个人付款，目前支持向指定微信用户的openid付款。
+        /// https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_2
+        /// </summary>
+        /// 
+        /// <param name="appId">申请商户号的appid或商户号绑定的 AppId。</param>
+        /// <param name="mchId">微信支付分配的商户号。</param>
+        /// <param name="orderNo">商户订单号，该订单号是商户系统内部生成的唯一编号。</param>
+        /// <param name="openid">openid是微信用户在公众账号下的唯一用户标识（appid不同，则获取到的openid就不同），可用于永久标记一个用户。</param>
+        /// <param name="re_user_name">收款用户真实姓名。如果<paramref name="check_name"/>设置为FORCE_CHECK，则必填用户真实姓名</param>
+        /// <param name="check_name">NO_CHECK：不校验真实姓名，ORCE_CHECK：强校验真实姓名。</param>
+        /// <param name="totalFee">付款金额，单位为分。</param>
+        /// <param name="transfersDescription">付款到零钱说明</param>
+        /// <returns>请求的结果，会被转换为 <see cref="XmlDocument"/> 实例并返回。</returns>
+        public async Task<XmlDocument> TransfersAsync(string appId, string mchId, string orderNo, string openid, string re_user_name,
+            int totalFee, string check_name = "NO_CHECK",
+            string transfersDescription = null)
+        {
+
+
+            var request = new WeChatPayParameters();
+            request.AddParameter("mch_appid", appId);
+            request.AddParameter("mchid", mchId);
+            request.AddParameter("nonce_str", RandomHelper.GetRandom());
+            request.AddParameter("partner_trade_no", orderNo);
+            request.AddParameter("openid", openid);
+            request.AddParameter("check_name", check_name);
+            request.AddParameter("re_user_name", re_user_name);
+            request.AddParameter("amount", totalFee);
+            request.AddParameter("desc", transfersDescription);
+
+            var signStr = SignatureGenerator.Generate(request, MD5.Create(), options.ApiKey);
+            request.AddParameter("sign", signStr);
+
+            return await RequestAndGetReturnValueAsync(await GetRequestUrl(TransfersUrl), request);
+        }
+
+        #endregion
+
+
+        #region 查询付款到零钱
+
+        /// <summary>
+        /// 用于商户的付款操作进行结果查询，返回付款操作详细结果。
+        /// https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_3
+        /// </summary>
+        /// <remarks>
+        /// 
+        /// </remarks>
+        /// <param name="appId">微信小程序或公众号的 AppId。</param>
+        /// <param name="mchId">微信支付分配的商户号。</param>
+        /// <param name="orderNo">商户订单号，该订单号是商户系统内部生成的唯一编号。</param>
+        /// <returns>请求的结果，会被转换为 <see cref="XmlDocument"/> 实例并返回。</returns>
+        /// <exception cref="ArgumentException">商户订单号为 null 时，会抛出本异常。</exception>
+        public async Task<XmlDocument> TransfersQueryAsync(string appId, string mchId, string orderNo)
+        {
+            if (string.IsNullOrEmpty(orderNo))
+            {
+                throw new ArgumentException("商户订单号需传递一个有效参数。");
+            }
+            var request = new WeChatPayParameters();
+            request.AddParameter("appid", appId);
+            request.AddParameter("mch_id", mchId);
+            request.AddParameter("nonce_str", RandomHelper.GetRandom());
+            request.AddParameter("partner_trade_no", orderNo);
+            var signStr = SignatureGenerator.Generate(request, MD5.Create(), options.ApiKey);
+            request.AddParameter("sign", signStr);
+
+            return await RequestAndGetReturnValueAsync(await GetRequestUrl(TransfersQueryUrl), request);
         }
         #endregion
     }

@@ -14,7 +14,7 @@ namespace WeChat.Pay.Services.Pay
     /// </summary>
     public class ServiceProviderPayService : WeChatPayService
     {
-        #region > 原始 URL 常量定义 <
+        #region 原始 URL 常量定义
 
         protected const string UnifiedOrderUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
         protected const string RefundUrl = "https://api.mch.weixin.qq.com/secapi/pay/refund";
