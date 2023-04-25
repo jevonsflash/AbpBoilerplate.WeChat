@@ -2,23 +2,16 @@
 {
     public interface IMiniProgramConfiguration
     {
-        /// <summary>
-        /// 消息加密的 Token。
-        /// </summary>
-        string Token { get; set; }
-
-        string OpenAppId { get; set; }
 
         /// <summary>
-        /// 微信公众号的 AppId。
+        /// 小程序 AppId。
         /// </summary>
         string AppId { get; set; }
 
         /// <summary>
-        /// 微信公众号的 API Secret。
+        /// 小程序 API Secret。
         /// </summary>
         string AppSecret { get; set; }
 
-        string EncodingAesKey { get; set; }
     }
 }

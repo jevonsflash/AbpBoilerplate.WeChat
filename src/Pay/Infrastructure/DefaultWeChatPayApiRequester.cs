@@ -13,6 +13,7 @@ using Abp.Extensions;
 using FileStorage.Blob;
 using System.Threading;
 using System.Data.SqlTypes;
+using WeChat.Pay.CertificateStorage;
 
 namespace WeChat.Pay.Infrastructure
 {
@@ -20,20 +21,23 @@ namespace WeChat.Pay.Infrastructure
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IPayConfiguration options;
+        private readonly ICertificateStorageProvider certificateStorageProvider;
         private readonly BlobManager blobManager;
 
         public DefaultWeChatPayApiRequester(
             IHttpClientFactory httpClientFactory,
             IPayConfiguration payConfiguration,
+            ICertificateStorageProvider certificateStorageProvider,
             BlobManager blobManager
 
 
             )
         {
             _httpClientFactory = httpClientFactory;
-            this.options=payConfiguration;
+            this.options = payConfiguration;
+            this.certificateStorageProvider = certificateStorageProvider;
             blobManager.SetContainerName(this.options.CertificateBlobContainerName);
-            this.blobManager=blobManager;
+            this.blobManager = blobManager;
         }
 
         public async Task<XmlDocument> RequestAsync(string url, string body)
@@ -81,26 +85,10 @@ namespace WeChat.Pay.Infrastructure
                 return handler;
 
 
+            var certificateBytes = certificateStorageProvider.GetBytes();
 
 
-            var certificateBytes = AsyncHelper.RunSync(async () =>
-            {
-                byte[] allBytes;
-                using (var stream = await blobManager.GetAsync(options.CertificateBlobName))
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        if (stream.CanSeek)
-                        {
-                            stream.Position = 0;
-                        }
-                        await stream.CopyToAsync(memoryStream);
-                        allBytes = memoryStream.ToArray();
-                    }
-                }
-                return allBytes;
 
-            });
             if (certificateBytes == null) throw new FileNotFoundException("证书文件不存在");
 
             handler.ClientCertificates.Add(new X509Certificate2(

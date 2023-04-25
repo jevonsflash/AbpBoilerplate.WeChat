@@ -7,6 +7,9 @@ using WeChat.Official.Services.User.Response;
 
 namespace WeChat.Official.Services.User
 {
+    /// <summary>
+    /// 用户管理服务。
+    /// </summary>
     public class UserManagementService : CommonService
     {
         protected const string GetOfficialUserListUrl = "https://api.weixin.qq.com/cgi-bin/user/get?";

@@ -24,11 +24,8 @@ namespace WeChat.MiniProgram
         public override void PreInitialize()
         {
             IocManager.Register<IMiniProgramConfiguration, MiniProgramConfiguration>();
-            Configuration.Modules.MiniProgram().Token = _appConfiguration["WeChat:MiniProgram:Token"];
-            Configuration.Modules.MiniProgram().OpenAppId = _appConfiguration["WeChat:MiniProgram:OpenAppId"];
             Configuration.Modules.MiniProgram().AppId = _appConfiguration["WeChat:MiniProgram:AppId"];
             Configuration.Modules.MiniProgram().AppSecret = _appConfiguration["WeChat:MiniProgram:AppSecret"];
-            Configuration.Modules.MiniProgram().EncodingAesKey = _appConfiguration["WeChat:MiniProgram:EncodingAesKey"];
         }
 
         public override void Initialize()

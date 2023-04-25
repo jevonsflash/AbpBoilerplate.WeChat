@@ -12,7 +12,6 @@
         /// </summary>
         public string MchId { get; set; }
 
-        #region > 可选参数 <
 
         /// <summary>
         /// 配置微信支付是否处于沙箱模式。当处于沙箱模式时，所有的支付服务将会调用沙箱支付接口，该参数值默认为 false。
@@ -40,10 +39,19 @@
         public string CertificateBlobName { get; set; }
 
         /// <summary>
+        /// PKCS 12 证书的资源地址。
+        /// </summary>
+        public string CertificateAssetsName { get; set; }
+
+        /// <summary>
+        /// PKCS 12 证书的物理地址。
+        /// </summary>
+        public string CertificateFilePath { get; set; }
+
+        /// <summary>
         /// PKCS 12 证书的密码，默认为商户号(<see cref="MchId"/>)。
         /// </summary>
         public string CertificateSecret { get; set; }
 
-        #endregion
     }
 }

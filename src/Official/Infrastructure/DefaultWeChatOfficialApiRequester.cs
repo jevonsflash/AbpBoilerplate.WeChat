@@ -22,7 +22,6 @@ namespace WeChat.Official.Infrastructure
             _accessTokenAccessor = accessTokenAccessor;
         }
 
-        #region > Public Methods <
 
         public async Task<string> RequestAsync(string targetUrl,
             HttpMethod method,
@@ -84,10 +83,6 @@ namespace WeChat.Official.Infrastructure
             return JsonConvert.DeserializeObject<TResponse>(responseString);
         }
 
-        #endregion
-
-        #region > Private Methods <
-
         private HttpRequestMessage BuildHttpGetRequestMessage(string targetUrl, IOfficialRequest officialRequest)
         {
             if (officialRequest == null)
@@ -135,6 +130,5 @@ namespace WeChat.Official.Infrastructure
             return queryStringBuilder.ToString().TrimEnd('&');
         }
 
-        #endregion
     }
 }

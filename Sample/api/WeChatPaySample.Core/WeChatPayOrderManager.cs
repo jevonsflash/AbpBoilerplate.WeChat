@@ -1,5 +1,6 @@
 ﻿using Abp.Authorization.Users;
 using Abp.Domain.Repositories;
+using Abp.Domain.Services;
 using Abp.UI;
 using System;
 using System.Globalization;
@@ -19,7 +20,7 @@ using WeChatPaySample.WeChatPay;
 
 namespace WeChatPaySample
 {
-    public class WeChatPayOrderManager
+    public class WeChatPayOrderManager : DomainService
     {
         private readonly IRepository<Order.Order, long> orderRepository;
 
@@ -54,7 +55,7 @@ namespace WeChatPaySample
         }
 
 
-        public  async Task<PrePayResult> PrePayAsync(Order.Order currentOrder, int? tenantId, string loginProvider)
+        public async Task<PrePayResult> PrePayAsync(Order.Order currentOrder, int? tenantId, string loginProvider)
         {
             var price = currentOrder.Payment.Value;
             var outTradeNo = currentOrder.OrderNumber;

@@ -11,13 +11,15 @@ using System.Security.Cryptography.X509Certificates;
 using System.Security.Authentication;
 using WeChat.Pay.Configuration;
 using Abp.Dependency;
-using FileStorage.Blob;
-using FileStorage.Configuration;
 using System.Threading.Tasks;
+using FileStorage;
+using WeChat.Pay.CertificateStorage;
+using System;
 
 namespace WeChat.Pay
 {
     [DependsOn(typeof(WeChatCommonModule))]
+    [DependsOn(typeof(FileStorageModule))]
     public class PayModule : AbpModule
     {
 
@@ -39,6 +41,10 @@ namespace WeChat.Pay
             Configuration.Modules.Pay().CertificateBlobContainerName = _appConfiguration["WeChat:Pay:CertificateBlobContainerName"];
             Configuration.Modules.Pay().CertificateBlobName = _appConfiguration["WeChat:Pay:CertificateBlobName"];
             Configuration.Modules.Pay().CertificateSecret = _appConfiguration["WeChat:Pay:CertificateSecret"];
+            Configuration.Modules.Pay().CertificateAssetsName = _appConfiguration["WeChat:Pay:CertificateAssetsName"];
+            Configuration.Modules.Pay().CertificateFilePath = _appConfiguration["WeChat:Pay:CertificateFilePath"];
+
+            IocManager.RegisterIfNot<ICertificateStorageProvider, FileStorageCertificateStorageProvider>();
         }
 
         public override void Initialize()
@@ -48,31 +54,17 @@ namespace WeChat.Pay
 
         public override async void PostInitialize()
         {
-            using (var blobContainerWrapper = IocManager.ResolveAsDisposable<BlobManager>())
+            using (var certificateStorageProvider = IocManager.ResolveAsDisposable<ICertificateStorageProvider>())
             {
-                var blobContainer = blobContainerWrapper.Object;
-
-                var blobName = Configuration.Modules.Pay().CertificateBlobName;
-                var certificateBlobContainerName = Configuration.Modules.Pay().CertificateBlobContainerName;
-                blobContainer.SetContainerName(certificateBlobContainerName);
-                if (await blobContainer.ExistsAsync(blobName))
+                if (certificateStorageProvider.Object == null)
                 {
-                    return;
+                    throw new NotImplementedException("未注册ICertificateStorageProvider");
                 }
-
-                await InitAppCertFile(blobContainer, blobName, $"WeChat.Pay.Assets.{blobName}.p12");
+                certificateStorageProvider.Object.Initialize();
             }
 
             base.PostInitialize();
         }
 
-        private static async Task InitAppCertFile(BlobManager blobContainer, string blobName, string fileName)
-        {
-            using (var memoryStream = Assembly.GetExecutingAssembly()
-                                .GetManifestResourceStream(fileName))
-            {
-                await blobContainer.SaveAsync(blobName, memoryStream, true);
-            }
-        }
     }
 }

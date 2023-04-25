@@ -22,11 +22,8 @@ namespace WeChat.Official
         public override void PreInitialize()
         {
             IocManager.Register<IOfficialConfiguration, OfficialConfiguration>();
-            Configuration.Modules.Official().Token = _appConfiguration["WeChat:Official:Token"];
-            Configuration.Modules.Official().OAuthRedirectUrl = _appConfiguration["WeChat:Official:OAuthRedirectUrl"];
             Configuration.Modules.Official().AppId = _appConfiguration["WeChat:Official:AppId"];
             Configuration.Modules.Official().AppSecret = _appConfiguration["WeChat:Official:AppSecret"];
-            Configuration.Modules.Official().EncodingAesKey = _appConfiguration["WeChat:Official:EncodingAesKey"];
         }
 
         public override void Initialize()

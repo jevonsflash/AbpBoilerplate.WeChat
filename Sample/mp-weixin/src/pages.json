@@ -9,7 +9,13 @@
 		{
 			"path": "pages/login/index",
 			"style": {
-				"navigationBarTitleText": "授权页"
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/login/wxLoginIndex",
+			"style": {
+				"navigationBarTitleText": "微信登录"
 			}
 		}
 	],
