@@ -30,13 +30,13 @@ namespace WeChatPaySample.Web
                 directoryInfo = directoryInfo.Parent;
             }
 
-            var webMvcFolder = Path.Combine(directoryInfo.FullName,  "Sample", "WeChatPaySample.Web.Mvc");
+            var webMvcFolder = Path.Combine(directoryInfo.FullName,  "Sample/api", "WeChatPaySample.Web.Mvc");
             if (Directory.Exists(webMvcFolder))
             {
                 return webMvcFolder;
             }
 
-            var webHostFolder = Path.Combine(directoryInfo.FullName, "Sample", "WeChatPaySample.Web.Host");
+            var webHostFolder = Path.Combine(directoryInfo.FullName, "Sample/api", "WeChatPaySample.Web.Host");
             if (Directory.Exists(webHostFolder))
             {
                 return webHostFolder;

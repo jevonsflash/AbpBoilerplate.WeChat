@@ -3,27 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChat.Pay", "Pay\WeChat.Pay.csproj", "{EF200E05-DF2E-4002-A0EA-8E1109FCE767}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChat.Pay", "src\Pay\WeChat.Pay.csproj", "{EF200E05-DF2E-4002-A0EA-8E1109FCE767}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChat.Official", "Official\WeChat.Official.csproj", "{4532733A-562F-472D-BB4F-BBAEF4A6A5CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChat.Official", "src\Official\WeChat.Official.csproj", "{4532733A-562F-472D-BB4F-BBAEF4A6A5CA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChat.MiniProgram", "MiniProgram\WeChat.MiniProgram.csproj", "{56EA1FE8-022E-4F6A-B9A7-AD076E6A0F36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChat.MiniProgram", "src\MiniProgram\WeChat.MiniProgram.csproj", "{56EA1FE8-022E-4F6A-B9A7-AD076E6A0F36}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChat.Common", "Common\WeChat.Common.csproj", "{0D68D621-3E39-47BF-81CE-AF82B9BE44F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChat.Common", "src\Common\WeChat.Common.csproj", "{0D68D621-3E39-47BF-81CE-AF82B9BE44F9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{A4B9E0AE-2E09-46F9-84B2-7D976B506F61}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{A4B9E0AE-2E09-46F9-84B2-7D976B506F61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.Web.Host", "Sample\WeChatPaySample.Web.Host\WeChatPaySample.Web.Host.csproj", "{39054D66-E570-44A5-AD99-35AECD6993B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.Web.Host", "Sample\api\WeChatPaySample.Web.Host\WeChatPaySample.Web.Host.csproj", "{39054D66-E570-44A5-AD99-35AECD6993B9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.Web.Core", "Sample\WeChatPaySample.Web.Core\WeChatPaySample.Web.Core.csproj", "{9ECA2EC6-0E0A-405D-ACD4-02E01B9C98F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.Web.Core", "Sample\api\WeChatPaySample.Web.Core\WeChatPaySample.Web.Core.csproj", "{9ECA2EC6-0E0A-405D-ACD4-02E01B9C98F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.Migrator", "Sample\WeChatPaySample.Migrator\WeChatPaySample.Migrator.csproj", "{E33E1F7B-CDFA-405F-8DD2-DF4B6BC72BB7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.Migrator", "Sample\api\WeChatPaySample.Migrator\WeChatPaySample.Migrator.csproj", "{E33E1F7B-CDFA-405F-8DD2-DF4B6BC72BB7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.EntityFrameworkCore", "Sample\WeChatPaySample.EntityFrameworkCore\WeChatPaySample.EntityFrameworkCore.csproj", "{83BAEE5B-2557-45B6-A32B-0C36BA197024}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.EntityFrameworkCore", "Sample\api\WeChatPaySample.EntityFrameworkCore\WeChatPaySample.EntityFrameworkCore.csproj", "{83BAEE5B-2557-45B6-A32B-0C36BA197024}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.Core", "Sample\WeChatPaySample.Core\WeChatPaySample.Core.csproj", "{AA070E72-9E6B-4775-915C-1FCAD3B3847D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.Core", "Sample\api\WeChatPaySample.Core\WeChatPaySample.Core.csproj", "{AA070E72-9E6B-4775-915C-1FCAD3B3847D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.Application", "Sample\WeChatPaySample.Application\WeChatPaySample.Application.csproj", "{C21EB512-FFA6-4B30-94BA-72288C0DB2DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeChatPaySample.Application", "Sample\api\WeChatPaySample.Application\WeChatPaySample.Application.csproj", "{C21EB512-FFA6-4B30-94BA-72288C0DB2DB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DA331AE4-4E56-42C8-B110-124F0854AAE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -76,6 +78,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{EF200E05-DF2E-4002-A0EA-8E1109FCE767} = {DA331AE4-4E56-42C8-B110-124F0854AAE8}
+		{4532733A-562F-472D-BB4F-BBAEF4A6A5CA} = {DA331AE4-4E56-42C8-B110-124F0854AAE8}
+		{56EA1FE8-022E-4F6A-B9A7-AD076E6A0F36} = {DA331AE4-4E56-42C8-B110-124F0854AAE8}
+		{0D68D621-3E39-47BF-81CE-AF82B9BE44F9} = {DA331AE4-4E56-42C8-B110-124F0854AAE8}
 		{39054D66-E570-44A5-AD99-35AECD6993B9} = {A4B9E0AE-2E09-46F9-84B2-7D976B506F61}
 		{9ECA2EC6-0E0A-405D-ACD4-02E01B9C98F3} = {A4B9E0AE-2E09-46F9-84B2-7D976B506F61}
 		{E33E1F7B-CDFA-405F-8DD2-DF4B6BC72BB7} = {A4B9E0AE-2E09-46F9-84B2-7D976B506F61}

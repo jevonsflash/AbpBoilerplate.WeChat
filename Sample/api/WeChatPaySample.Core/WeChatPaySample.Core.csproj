@@ -20,7 +20,7 @@
     <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.4.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\MiniProgram\WeChat.MiniProgram.csproj" />
-    <ProjectReference Include="..\..\Pay\WeChat.Pay.csproj" />
+    <ProjectReference Include="..\..\..\src\MiniProgram\WeChat.MiniProgram.csproj" />
+    <ProjectReference Include="..\..\..\src\Pay\WeChat.Pay.csproj" />
   </ItemGroup>
 </Project>
