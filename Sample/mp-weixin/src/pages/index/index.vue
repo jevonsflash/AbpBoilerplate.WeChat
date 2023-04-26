@@ -9,11 +9,12 @@
       </div>
       <div class="main-area">
         <ul>
-          <li>请在电脑浏览器打开:<br />https://www.matoapp.net:3003/</li>
-          <li>使用微信扫描Web端的小程序码</li>
-          <li>等待微信小程序跳转至授权页面</li>
-          <li>点击授权登录按钮，完成登录</li>
+          <li>运行Sample/api后端服务</li>
+          <li>打开小程序，创建订单后点击支付</li>
+          <li>支付完成后等待支付结果</li>
+          <li>如果没有成功返回结果，需要手动调用FinishPay接口</li>
         </ul>
+        <button v-on:click="getOrders">刷新订单列表</button>
         <button v-on:click="handleCreateOrder">点击创建订单</button>
         <ul>
           <li v-for="(item, index) in orders" :key="index" class="order-item">
@@ -22,15 +23,15 @@
             金额：{{ item.payment }} <br />
             描述： {{ item.description }}<br />
             状态 {{ item.status }}<br />
-            <button v-on:click="handlePay(item)">点击支付</button>
+            <button
+              v-if="item.status == '已支付'"
+              v-on:click="handleRefund(item)"
+            >
+              点击退款
+            </button>
+            <button v-else v-on:click="handlePay(item)">点击支付</button>
           </li>
         </ul>
-      </div>
-      <div class="main-area sub-title">
-        <text>详情请查看系列博客⌈使用 Abp.Zero 搭建第三方登录模块⌋</text>
-      </div>
-      <div class="main-area">
-        <text>https://blog.csdn.net/jevonsflash/</text>
       </div>
     </div>
   </div>
@@ -39,15 +40,18 @@
 <script lang='ts'>
 import { getCancelToken, request } from "../utils/ajaxRequire";
 import md5 from "js-md5";
+import {
+  URL_PREFIX,
+  VUE_APP_WECHAT_APPID,
+  VUE_APP_WECHAT_APIKEY,
+} from "../page_configs";
+
 export default {
   data() {
     return {
       title: "微信支付 小程序sample",
       userId: null,
       loading: false,
-      prefix: "https://localhost:44311",
-      VUE_APP_WECHAT_APPID: "wx9b1b9f9c9c9c9c9c",
-      VUE_APP_WECHAT_APIKEY: "wx9b1b9f9c9c9c9c9c",
       orders: [],
       saleOrders: [
         {
@@ -88,33 +92,43 @@ export default {
 
     async getOrders() {
       await request(
-        `${this.prefix}/api/services/app/Order/GetAll`,
+        `${URL_PREFIX}/api/services/app/Order/GetAll`,
         "get",
         null
       ).then((re) => {
         this.orders = re.data.result.items;
       });
     },
- 
-
-    async handlePay(order) {
-      var that = this;
-      var prePayModel = {
-        type: "订单支付",
+    async handleRefund(order) {
+      var refundModel = {
         id: order.id,
-        userId: this.userId,
-        loginProvider: "WeChatAuthProvider",
       };
 
       await request(
-        `${this.prefix}/api/services/app/Pay/PrePay`,
+        `${URL_PREFIX}/api/services/app/Pay/Refund`,
+        "post",
+        refundModel
+      ).then((re) => {
+        var res = re.data.result;
+        if (res == null) return;
+      });
+    },
+    async handlePay(order) {
+      var that = this;
+      var prePayModel = {
+        id: order.id,
+        openId: this.userId,
+      };
+
+      await request(
+        `${URL_PREFIX}/api/services/app/Pay/PrePay`,
         "post",
         prePayModel
       ).then((re) => {
         var res = re.data.result;
         if (res == null) return;
-        const appId: string = this.VUE_APP_WECHAT_APPID;
-        const apiKey: string = this.VUE_APP_WECHAT_APIKEY;
+        const appId: string = VUE_APP_WECHAT_APPID;
+        const apiKey: string = VUE_APP_WECHAT_APIKEY;
         var timeStamp = String(Date.now());
         var paySingType = "MD5";
         var paySignOriginObject = {
@@ -135,6 +149,7 @@ export default {
         var paySignOriginString = array.join("&");
 
         var paySign = md5(paySignOriginString);
+        debugger;
         var paymentObj: UniApp.RequestPaymentOptions = {
           provider: "wxpay",
           timeStamp: timeStamp,
@@ -146,7 +161,7 @@ export default {
             uni.showLoading({ title: "支付中" });
             //支付成功
             await request(
-              `${that.prefix}/api/services/app/Pay/FinishPay`,
+              `${URL_PREFIX}/api/services/app/Pay/FinishPay`,
               "post",
               prePayModel
             ).then((re) => {
@@ -178,7 +193,7 @@ export default {
       var model = this.saleOrders[0];
       (model as any).userId = this.userId;
       await request(
-        `${this.prefix}/api/services/app/Order/Create`,
+        `${URL_PREFIX}/api/services/app/Order/Create`,
         "post",
         model
       )

@@ -16,9 +16,7 @@ namespace WeChatPaySample.Order.Consts
     {
         public const string 已下单 = "已下单";
         public const string 已支付 = "已支付";
-        public const string 已完成 = "已完成";
         public const string 已关闭 = "已关闭";
-        public const string 已取消 = "已取消";
         public const string 已退款 = "已退款";
 
     }

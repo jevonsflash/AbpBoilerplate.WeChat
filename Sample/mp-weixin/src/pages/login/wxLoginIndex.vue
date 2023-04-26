@@ -19,6 +19,7 @@
 
 <script lang='ts'>
 import { getCancelToken, request } from "../utils/ajaxRequire";
+import { URL_PREFIX, VUE_APP_WECHAT_APPID, VUE_APP_WECHAT_APIKEY } from "../page_configs";
 
 export default {
   data() {
@@ -28,7 +29,6 @@ export default {
       isInvalid: false,
 
       loginForms: { userNameOrEmailAddress: "admin", password: "123qwe" },
-      prefix: "https://localhost:44311",
     };
   },
 
@@ -58,13 +58,13 @@ export default {
           console.log(loginRes.authResult);
           var accessCode = loginRes.code;
           await request(
-            `${this.prefix}/api/services/app/MiniProgram/Login`,
+            `${URL_PREFIX}/api/services/app/MiniProgram/Login`,
             "post",
-            accessCode
+            {accessCode}
           )
             .then((re) => {
-              var token = re.data.result.sessionKey;
-              var userId = re.data.result.openId;
+              var token = re.data.result.session_key;
+              var userId = re.data.result.openid;
               uni.setStorageSync("token", token);
               uni.setStorageSync("userId", userId);
               uni.redirectTo({

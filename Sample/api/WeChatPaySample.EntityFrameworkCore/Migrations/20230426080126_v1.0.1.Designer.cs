@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WeChatPaySample.EntityFrameworkCore;
 
@@ -11,9 +12,11 @@ using WeChatPaySample.EntityFrameworkCore;
 namespace WeChatPaySample.Migrations
 {
     [DbContext(typeof(WeChatPaySampleDbContext))]
-    partial class WeChatPaySampleDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230426080126_v1.0.1")]
+    partial class v101
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

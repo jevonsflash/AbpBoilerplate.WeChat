@@ -18,11 +18,7 @@ namespace WeChatPaySample.Order
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public override long Id { get; set; }
 
-        [Comment("关联用户")]
-        public long UserId { get; set; }
-
-        [ForeignKey("UserId")]
-        public User User { get; set; }
+        public string OpenId { get; set; } 
 
 
         [Comment("订单号")]

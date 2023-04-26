@@ -24,8 +24,6 @@ namespace WeChatPaySample
     {
         private readonly IRepository<Order.Order, long> orderRepository;
 
-        private readonly IRepository<UserLogin, long> userLoginRepository;
-        private readonly UserManager userManager;
         private readonly IPayConfiguration payConfiguration;
         private readonly IMiniProgramConfiguration configuration;
         private readonly OrdinaryMerchantPayService ordinaryMerchantPayService;
@@ -46,8 +44,6 @@ namespace WeChatPaySample
         {
             this.orderRepository = orderRepository;
 
-            this.userLoginRepository = userLoginRepository;
-            this.userManager = userManager;
             this.payConfiguration = payConfiguration;
             this.configuration = configuration;
             this.ordinaryMerchantPayService = ordinaryMerchantPayService;
@@ -55,30 +51,11 @@ namespace WeChatPaySample
         }
 
 
-        public async Task<PrePayResult> PrePayAsync(Order.Order currentOrder, int? tenantId, string loginProvider)
+        public async Task<PrePayResult> PrePayAsync(Order.Order currentOrder, int? tenantId, string openId)
         {
             var price = currentOrder.Payment.Value;
             var outTradeNo = currentOrder.OrderNumber;
-            var userId = currentOrder.UserId;
-            var openId = "";
-
-            var query = from userLogin in userLoginRepository.GetAll()
-                        join user in userManager.Users on userLogin.UserId equals user.Id
-                        where user.Id == userId &&
-                        userLogin.LoginProvider == loginProvider &&
-                        userLogin.TenantId == tenantId
-                        select userLogin;
-
-            var currentUserLogin = query.FirstOrDefault();
-            if (currentUserLogin != null)
-            {
-                openId = currentUserLogin.ProviderKey;
-            }
-            else
-            {
-                throw new UserFriendlyException("此账号未绑定第三方支付账号，无法使用第三方支付");
-
-            }
+            
 
             //https://pay.weixin.qq.com/wiki/doc/apiv3/apis/chapter3_5_5.shtml
 
@@ -187,7 +164,7 @@ namespace WeChatPaySample
 
         public async Task<Order.Order> CloseAsync(Order.Order order)
         {
-            if (order.Status == OrderStatus.已完成 || order.Status == OrderStatus.已退款 || order.Status == OrderStatus.已支付 || order.Status == OrderStatus.已关闭)
+            if (order.Status == OrderStatus.已退款 || order.Status == OrderStatus.已支付 || order.Status == OrderStatus.已关闭)
             {
                 throw new UserFriendlyException("订单已支付或者已关闭，无法操作关闭订单");
             }

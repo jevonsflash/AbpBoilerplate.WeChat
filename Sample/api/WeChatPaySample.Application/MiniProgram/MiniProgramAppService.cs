@@ -23,13 +23,13 @@ namespace WeChatPaySample.Pay
         {          
             this.loginService = loginService;
         }
-        public async Task<Code2SessionResponse> Login(string accessCode)
+        public async Task<Code2SessionResponse> Login(LoginInput input)
         {
 
-            var weChatLoginResult = await loginService.Code2SessionAsync(accessCode);
+            var weChatLoginResult = await loginService.Code2SessionAsync(input.AccessCode);
             if (weChatLoginResult.ErrorCode != 0)
             {
-                LogHelper.Logger.Error("小程序调用获取token接口失败，原因" + weChatLoginResult.ErrorMessage);
+                throw new UserFriendlyException("小程序调用获取token接口失败，原因" + weChatLoginResult.ErrorMessage);
             }
             //小程序调用获取token接口 https://api.weixin.qq.com/cgi-bin/token 返回的token值无法用于网页授权接口！
             //tips：https://www.cnblogs.com/remon/p/6420418.html

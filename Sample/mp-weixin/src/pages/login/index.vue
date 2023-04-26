@@ -32,6 +32,7 @@
 
 <script lang='ts'>
 import { getCancelToken, request } from "../utils/ajaxRequire";
+import { URL_PREFIX, VUE_APP_WECHAT_APPID, VUE_APP_WECHAT_APIKEY } from "../page_configs";
 
 export default {
   data() {
@@ -41,7 +42,6 @@ export default {
       isInvalid: false,
 
       loginForms: { userNameOrEmailAddress: "admin", password: "123qwe" },
-      prefix: "https://localhost:44311",
     };
   },
 
@@ -65,7 +65,7 @@ export default {
       var currentForms = this.loginForms;
       this.loading = true;
       await request(
-        `${this.prefix}/api/TokenAuth/Authenticate`,
+        `${URL_PREFIX}/api/TokenAuth/Authenticate`,
         "post",
         currentForms
       )

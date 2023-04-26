@@ -11,11 +11,8 @@ namespace WeChatPaySample.Pay
     public class PrePayInput  : EntityDto<long>
     {
         [Required]
-        public long UserId { get; set; }
+        public string OpenId { get; set; }
+
         public string Type { get; set; }
-        public string LoginProvider { get; set; }
-
-
-
     }
 }
