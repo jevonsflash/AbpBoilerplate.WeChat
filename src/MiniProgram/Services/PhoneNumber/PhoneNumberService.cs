@@ -1,8 +1,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
-using WeChat.MiniProgram.Services;
 
-namespace WeChat.MiniProgram.Services.ACode
+namespace WeChat.MiniProgram.Services.PhoneNumber
 {
     /// <summary>
     /// 手机号服务。

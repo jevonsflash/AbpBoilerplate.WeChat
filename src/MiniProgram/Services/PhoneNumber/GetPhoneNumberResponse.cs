@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using WeChat.MiniProgram.Models;
 
-namespace WeChat.MiniProgram.Services.ACode
+namespace WeChat.MiniProgram.Services.PhoneNumber
 {
     public class GetPhoneNumberResponse : IMiniProgramResponse
     {
@@ -9,7 +9,7 @@ namespace WeChat.MiniProgram.Services.ACode
 
         public int ErrorCode { get; set; }
 
-        [JsonProperty("phone_info")] 
+        [JsonProperty("phone_info")]
         public PhoneInfo PhoneInfo { get; set; }
     }
 

@@ -1,7 +1,7 @@
 using Newtonsoft.Json;
 using WeChat.MiniProgram.Models;
 
-namespace WeChat.MiniProgram.Services.ACode
+namespace WeChat.MiniProgram.Services.PhoneNumber
 {
     public class GetPhoneNumberRequest : MiniProgramCommonRequest
     {
